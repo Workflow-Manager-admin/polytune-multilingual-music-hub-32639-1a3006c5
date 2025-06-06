@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './App.css';
+import LoginPage from "./LoginPage";
 
 /**
  * Openwhyd API utility for working with session and playlists.
