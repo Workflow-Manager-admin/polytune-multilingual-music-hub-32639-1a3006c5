@@ -342,15 +342,29 @@ function App() {
   // Controls main UI mode
   const [showWhyd, setShowWhyd] = useState(false);
   const [whydSession, setWhydSession] = useState(null);
+  const [isAuthed, setIsAuthed] = useState(false);
+
+  // Receives info from LoginPage on successful login
+  const handleSuccessfulLogin = (sessionInfo) => {
+    setIsAuthed(true);
+    // Optionally store more info for future expansion
+    setWhydSession(sessionInfo);
+  };
 
   const handleAuth = (sessionInfo) => {
     setWhydSession(sessionInfo);
   };
   const handleLogout = () => {
     setWhydSession(null);
+    setIsAuthed(false);
     // Attempt Openwhyd logout (if supported)
     window.fetch(`${OPENWHYD_API_BASE}/logout`, {credentials:"include",mode:"cors"});
   };
+
+  // If not authenticated, always show LoginPage first
+  if (!isAuthed) {
+    return <LoginPage onLogin={handleSuccessfulLogin} />;
+  }
 
   return (
     <div className="app">
@@ -366,6 +380,11 @@ function App() {
             >
               {showWhyd ? "Show Lyrics Tool" : "YouTube Playlist (Openwhyd)"}
             </button>
+            <button
+              className="btn"
+              style={{marginLeft:12}}
+              onClick={handleLogout}
+            >Log out</button>
           </div>
         </div>
       </nav>
