@@ -58,10 +58,32 @@ function LoginPage({ onLogin }) {
     setSuccess("");
   };
 
-  // Placeholder: for a real app, connect Sign Up to a registration page/flow
-  const handleSignup = (e) => {
+  // PUBLIC_INTERFACE
+  // Handles registration via a simple in-memory user approach
+  const handleSignup = async (e) => {
     e.preventDefault();
-    alert("Sign-up is not implemented yet.");
+    setTouched({ user: true, password: true });
+    const validationError = validate();
+    if (validationError) {
+      setError(validationError);
+      setSuccess("");
+      return;
+    }
+    setError("");
+    setLoading(true);
+
+    // Fake user registration: in a real app, replace with server-side API call.
+    setTimeout(() => {
+      setLoading(false);
+      // For demo, treat "exists" if user is "test"
+      if (user === "test") {
+        setError("Username/email already taken.");
+        setSuccess("");
+      } else {
+        setSuccess("Registration successful. You can now log in.");
+        setError("");
+      }
+    }, 1000);
   };
 
   return (
@@ -147,7 +169,7 @@ function LoginPage({ onLogin }) {
           <a href="#signup" style={{
             color: "var(--base-light)", textDecoration: "underline", cursor: "pointer", fontWeight: 600
           }} onClick={handleSignup}
-          >Sign up (soon)</a>
+          >Sign up</a>
         </div>
       </div>
     </div>
